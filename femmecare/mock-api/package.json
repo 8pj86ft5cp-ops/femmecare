@@ -1,0 +1,13 @@
+{
+  "name": "femmecare-mock",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Mock do back-end FemmeCare para testes. NÃO usar com dados reais.",
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
