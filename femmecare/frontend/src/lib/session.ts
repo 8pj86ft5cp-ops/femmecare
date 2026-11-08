@@ -18,6 +18,7 @@ export async function getMe(): Promise<Me | null> {
 export async function requirePapel(papel: Role): Promise<Me> {
   const me = await getMe();
   if (!me) redirect('/login');
+  if (me.role === 'PATIENT' && me.consentRequired) redirect('/consentimento');
   if (me.role !== papel) redirect(HOME_POR_PAPEL[me.role]);
   return me;
 }

@@ -1,5 +1,6 @@
 import { PressaoForm } from '@/components/PressaoForm';
 import { Secao } from '@/components/Secao';
+import { LineChart } from '@/components/LineChart';
 import { formatarDataHora } from '@/lib/formatar';
 import { serverApi } from '@/lib/api-server';
 import { requirePapel } from '@/lib/session';
@@ -14,6 +15,32 @@ export default async function PressaoPage() {
       <Secao titulo="Registrar pressão" descricao="Você pode medir em casa e registrar aqui. Valores de risco são enviados à sua equipe na hora.">
         <PressaoForm endpoint="/patients/me/blood-pressure" mostrarAlerta />
       </Secao>
+      {leituras.length > 0 && (
+        <Secao titulo="Variação da pressão" descricao="Gráfico das 14 medições mais recentes.">
+          <LineChart
+            title="Pressão arterial ao longo do tempo"
+            unit="mmHg"
+            series={[
+              {
+                label: 'Sistólica',
+                color: '#b76e79',
+                points: leituras.slice().reverse().slice(-14).map((leitura) => ({
+                  label: new Date(leitura.measuredAt).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }),
+                  value: leitura.systolic,
+                })),
+              },
+              {
+                label: 'Diastólica',
+                color: '#58765b',
+                points: leituras.slice().reverse().slice(-14).map((leitura) => ({
+                  label: new Date(leitura.measuredAt).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }),
+                  value: leitura.diastolic,
+                })),
+              },
+            ]}
+          />
+        </Secao>
+      )}
       <Secao titulo="Histórico">
         {leituras.length === 0 ? (
           <p className="text-sm text-slate-500">Nenhuma medição registrada ainda.</p>

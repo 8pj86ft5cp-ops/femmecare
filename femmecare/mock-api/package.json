@@ -5,7 +5,8 @@
   "description": "Mock do back-end FemmeCare para testes. NÃO usar com dados reais.",
   "type": "module",
   "scripts": {
-    "start": "node server.mjs"
+    "start": "node server.mjs",
+    "test": "node --test"
   },
   "engines": {
     "node": ">=20"

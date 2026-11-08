@@ -1,16 +1,20 @@
 import { serverApi } from '@/lib/api-server';
 import { requirePapel } from '@/lib/session';
-import type { Doctor, Metrics, Tenant } from '@/lib/types';
+import type { AuditEntry, Doctor, Metrics, PatientDeletionRequest, Tenant } from '@/lib/types';
+import { Auditoria } from './Auditoria';
+import { SolicitacoesExclusao } from './SolicitacoesExclusao';
 import { CorpoMedico } from './CorpoMedico';
 import { TenantForm } from './TenantForm';
 
 export default async function AdminPage() {
   await requirePapel('ADMIN');
 
-  const [metricas, tenant, medicos] = await Promise.all([
+  const [metricas, tenant, medicos, auditoria, pedidosExclusao] = await Promise.all([
     serverApi<Metrics>('/admin/metrics'),
     serverApi<Tenant>('/tenant/public'),
     serverApi<Doctor[]>('/admin/doctors'),
+    serverApi<AuditEntry[]>('/admin/audit-log'),
+    serverApi<PatientDeletionRequest[]>('/admin/deletion-requests'),
   ]);
 
   const indicadores = [
@@ -43,6 +47,8 @@ export default async function AdminPage() {
 
       <TenantForm inicial={tenant} />
       <CorpoMedico inicial={medicos} />
+      <SolicitacoesExclusao pedidos={pedidosExclusao} />
+      <Auditoria registros={auditoria} />
     </div>
   );
 }

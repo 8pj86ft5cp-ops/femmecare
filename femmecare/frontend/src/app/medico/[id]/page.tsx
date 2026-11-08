@@ -14,6 +14,7 @@ import type {
   PatientSummary,
   Prescription,
   PrescriptionStatus,
+  BirthPlanChecklistItem,
 } from '@/lib/types';
 import { AgendaForm } from './AgendaForm';
 import { DocumentoForm } from './DocumentoForm';
@@ -35,7 +36,7 @@ export default async function PacienteDetalhe({ params }: { params: Promise<{ id
   const base = `/doctors/patients/${encodeURIComponent(id)}`;
 
   // Cada leitura de prontuário é registrada no audit_log pelo back-end.
-  const [paciente, evolucoes, prescricoes, solicitacoes, documentos, consulta, pressoes] = await Promise.all([
+  const [paciente, evolucoes, prescricoes, solicitacoes, documentos, consulta, pressoes, checklist] = await Promise.all([
     serverApi<PatientSummary>(base),
     serverApi<MedicalRecord[]>(`${base}/records`),
     serverApi<Prescription[]>(`${base}/prescriptions`),
@@ -43,6 +44,7 @@ export default async function PacienteDetalhe({ params }: { params: Promise<{ id
     serverApi<Documento[]>(`${base}/documents`),
     serverApi<Appointment | null>(`${base}/appointment`),
     serverApi<BloodPressureReading[]>(`${base}/blood-pressure`),
+    serverApi<BirthPlanChecklistItem[]>(`${base}/birth-plan-checklist`),
   ]);
 
   const documentosMedicos = documentos.filter((d) => d.type !== 'PATIENT_EXAM');
@@ -101,6 +103,20 @@ export default async function PacienteDetalhe({ params }: { params: Promise<{ id
           </p>
         )}
         <AgendaForm pacienteId={id} />
+      </Secao>
+
+      <Secao titulo="Plano de parto e maternidade" descricao="Checklist atualizado pela paciente.">
+        {checklist.filter((item) => item.checked).length} de {checklist.length} itens concluídos
+        <ul className="mt-3 space-y-2">
+          {checklist.map((item) => (
+            <li key={item.id} className="flex items-start gap-2 text-sm text-slate-700">
+              <span aria-hidden="true" className={item.checked ? 'font-bold text-green-700' : 'text-slate-400'}>
+                {item.checked ? '✓' : '○'}
+              </span>
+              {item.label}
+            </li>
+          ))}
+        </ul>
       </Secao>
 
       <Secao titulo="Ultrassom e resultados" descricao="Arquivos enviados aqui ficam disponíveis para a paciente.">

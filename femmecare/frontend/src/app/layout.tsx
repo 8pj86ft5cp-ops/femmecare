@@ -19,6 +19,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const cor = tenant.primaryColor ?? '#b76e79';
   const larguraConteudo = me?.role === 'PATIENT' ? 'max-w-7xl' : 'max-w-3xl';
   const espacoMenuLateral = me?.role === 'PATIENT' ? 'lg:pl-20' : '';
+  const espacoMenuMobile = me?.role === 'PATIENT' ? 'pb-24 lg:pb-8' : '';
 
   const tema = {
     '--brand': cor,
@@ -30,7 +31,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     <html lang="pt-BR" style={tema} suppressHydrationWarning>
       <body className="min-h-screen">
         <Header tenant={tenant} me={me} />
-        <main className={`mx-auto ${larguraConteudo} px-4 py-8 ${espacoMenuLateral}`}>{children}</main>
+        <main className={`mx-auto ${larguraConteudo} px-4 py-8 ${espacoMenuLateral} ${espacoMenuMobile}`}>{children}</main>
       </body>
     </html>
   );

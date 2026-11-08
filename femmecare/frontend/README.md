@@ -63,3 +63,7 @@ Contas de teste (senha `123456` para todas):
 | Paciente | paciente@demo.com |
 | Médica | medica@demo.com |
 | Admin da clínica | admin@demo.com |
+
+Na lista de pacientes da médica, use **Cadastrar paciente** para gerar um link de primeiro acesso. Compartilhe o link com a paciente para que ela crie uma senha (válido por 48 horas e de uso único no mock). O mock guarda os convites em memória, então eles deixam de valer quando o servidor é reiniciado. Não use o mock nem dados fictícios como serviço de produção.
+
+O mock também implementa telas de consentimento, novidades, alertas lidos, gráficos, filtros, agenda diária, exportação e pedidos de exclusão LGPD, checklist e auditoria. Para validar essas rotas: `cd ../mock-api && npm test`. Os dados ficam somente em memória. As tabelas da migration `V2` documentam a persistência necessária, mas o backend Spring Boot ainda precisa implementar os novos endpoints antes de qualquer implantação.

@@ -14,6 +14,7 @@ export interface Me {
   name: string;
   email: string;
   role: Role;
+  consentRequired?: boolean;
 }
 
 export interface Tenant {
@@ -70,6 +71,7 @@ export interface AlertItem {
   symptom: string;
   severity: Severity;
   loggedAt: string;
+  isRead: boolean;
 }
 
 export interface Vitals {
@@ -159,4 +161,36 @@ export interface Metrics {
   doctors: number;
   monthlyUsageRate: number;
   retentionRate: number;
+}
+
+export interface PatientNotifications {
+  documents: number;
+  appointment: number;
+}
+
+export interface BirthPlanChecklistItem {
+  id: string;
+  label: string;
+  checked: boolean;
+}
+
+export interface AuditEntry {
+  id: string;
+  actorName: string;
+  patientName: string;
+  action: string;
+  entity: string;
+  occurredAt: string;
+}
+
+export interface PatientDeletionRequest {
+  id: string;
+  patientName: string;
+  status: string;
+  createdAt: string;
+}
+
+export interface DoctorAppointment extends Appointment {
+  patientId: string;
+  patientName: string;
 }

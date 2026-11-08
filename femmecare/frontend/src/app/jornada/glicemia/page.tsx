@@ -1,4 +1,5 @@
 import { Secao } from '@/components/Secao';
+import { LineChart } from '@/components/LineChart';
 import { formatarDataHora } from '@/lib/formatar';
 import { serverApi } from '@/lib/api-server';
 import { requirePapel } from '@/lib/session';
@@ -20,6 +21,22 @@ export default async function GlicemiaPage() {
       <Secao titulo="Registrar glicemia" descricao="Meça em casa e registre o valor aqui.">
         <GlicemiaForm />
       </Secao>
+      {medicoes.length > 0 && (
+        <Secao titulo="Variação da glicemia" descricao="Gráfico das 14 medições mais recentes.">
+          <LineChart
+            title="Glicemia ao longo do tempo"
+            unit="mg/dL"
+            series={[{
+              label: 'Glicemia',
+              color: '#58765b',
+              points: medicoes.slice().reverse().slice(-14).map((medicao) => ({
+                label: new Date(medicao.measuredAt).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }),
+                value: medicao.value,
+              })),
+            }]}
+          />
+        </Secao>
+      )}
       <Secao titulo="Histórico">
         {medicoes.length === 0 ? (
           <p className="text-sm text-slate-500">Nenhuma medição registrada ainda.</p>
