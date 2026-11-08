@@ -16,9 +16,10 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const [tenant, me] = await Promise.all([getTenant(), getMe()]);
-  const cor = tenant.primaryColor ?? '#0f766e';
+  const cor = tenant.primaryColor ?? '#b76e79';
+  const larguraConteudo = me?.role === 'PATIENT' ? 'max-w-7xl' : 'max-w-3xl';
+  const espacoMenuLateral = me?.role === 'PATIENT' ? 'lg:pl-20' : '';
 
-  // A identidade visual da clínica entra como variáveis CSS na raiz do documento.
   const tema = {
     '--brand': cor,
     '--brand-soft': `color-mix(in srgb, ${cor} 12%, white)`,
@@ -27,9 +28,9 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   return (
     // suppressHydrationWarning: extensões como o Dark Reader alteram atributos desta tag antes do React carregar.
     <html lang="pt-BR" style={tema} suppressHydrationWarning>
-      <body className="min-h-screen bg-white">
+      <body className="min-h-screen">
         <Header tenant={tenant} me={me} />
-        <main className="mx-auto max-w-3xl px-4 py-8">{children}</main>
+        <main className={`mx-auto ${larguraConteudo} px-4 py-8 ${espacoMenuLateral}`}>{children}</main>
       </body>
     </html>
   );

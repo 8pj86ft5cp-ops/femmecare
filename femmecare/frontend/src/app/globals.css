@@ -3,13 +3,16 @@
 @tailwind utilities;
 
 :root {
-  /* Tema claro sempre: fundo branco e cores suaves. */
   color-scheme: light;
-  /* Padrão. A clínica sobrescreve estas variáveis no <html> com a cor da marca. */
-  --brand: #0f766e;
-  --brand-soft: color-mix(in srgb, #0f766e 10%, white);
+  --brand: #b76e79;
+  --brand-soft: color-mix(in srgb, var(--brand) 10%, white);
+  --page-bg: #edf5ed;
+  --surface: #fffdfb;
+  --sage: #58765b;
+  --sage-soft: #edf5ed;
 }
 
 body {
-  @apply bg-white text-slate-600 antialiased;
+  background: var(--page-bg);
+  @apply text-slate-700 antialiased;
 }

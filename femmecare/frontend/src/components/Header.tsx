@@ -9,9 +9,11 @@ const MENU: Record<Role, { href: string; label: string }[]> = {
 };
 
 export function Header({ tenant, me }: { tenant: Tenant; me: Me | null }) {
+  const larguraConteudo = me?.role === 'PATIENT' ? 'max-w-7xl' : 'max-w-3xl';
+
   return (
-    <header className="border-b border-slate-100 bg-white">
-      <div className="mx-auto flex max-w-3xl items-center justify-between gap-4 px-4 py-3">
+    <header className="border-b border-[#f0e5e0] bg-[#fffdfb]">
+      <div className={`mx-auto flex ${larguraConteudo} items-center justify-between gap-4 px-4 py-3`}>
         <Link href="/" className="flex items-center gap-3">
           {tenant.logoUrl ? (
             <img src={tenant.logoUrl} alt={tenant.name} className="h-9 w-auto" />
